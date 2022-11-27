@@ -8,7 +8,12 @@ import {
     FIREBASE_MEASUREMENTID
 } from '@env';
 import { initializeApp } from 'firebase/app';	
-import { getAuth } from 'firebase/auth';
+import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    signOut
+} from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 
@@ -28,4 +33,22 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const db = getDatabase(firebaseApp);
 export const storage = getStorage(firebaseApp);
+
+export const login = async (email: string, password: string) => {
+    const auth = getAuth();
+    const userCredential = await signInWithEmailAndPassword(auth, email, password
+    );
+    return userCredential.user;
+};
+
+export const register = async (email: string, password: string) => {
+    const auth = getAuth();
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+};
+
+export const logout = async () => {
+const auth = getAuth();
+await signOut(auth);
+};
 
